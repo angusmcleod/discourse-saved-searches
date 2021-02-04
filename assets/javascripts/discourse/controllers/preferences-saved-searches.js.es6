@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
 
   @discourseComputed("model.saved_searches")
   searchStrings() {
+    console.log('searchstrings');
     let records = [];
     (this.get("model.saved_searches") || []).forEach((s) => {
       records.push({ query: s });
@@ -17,9 +18,22 @@ export default Ember.Controller.extend({
     }
     return records;
   },
+    @discourseComputed("model.saved_tag_searches")
+    tagSearchStrings() {
+      console.log('tag searchstrings');
+      let records = [];
+      (this.get("model.saved_tag_searches") || []).forEach((s) => {
+        records.push({ query: s });
+      });
+      while (records.length < this.get("maxSavedSearches")) {
+        records.push({ query: "" });
+      }
+      return records;
+    },
 
   actions: {
     save() {
+      console.log('save!');
       this.setProperties({ saved: false, isSaving: true });
 
       const searches = this.get("searchStrings")
@@ -30,11 +44,20 @@ export default Ember.Controller.extend({
 
       this.set("model.saved_searches", searches);
 
+      const tagSearches = this.get("tagSearchStrings")
+        .map((s) => {
+          return s.query ? s.query : null;
+        })
+        .compact();
+
+      this.set("model.saved_tag_searches", searches);
+
       return ajax("/saved_searches", {
         type: "PUT",
         dataType: "json",
         data: {
           searches: searches,
+          tag_searches: tagSearches,
         },
       }).then((result, error) => {
         this.setProperties({ saved: true, isSaving: false });

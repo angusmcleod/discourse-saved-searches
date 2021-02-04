@@ -3,3 +3,5 @@ en:
     saved_searches:
       title: "Saved Searches"
       description: "Save up to %{max} searches and receive notifications about new search results."
+      tag_title: "Saved Tag Searches"
+      tag_description: "Save up to %{max} tag searches and receive notifications about new search results."

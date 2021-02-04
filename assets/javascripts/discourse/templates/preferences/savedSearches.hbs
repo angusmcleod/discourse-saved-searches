@@ -10,6 +10,19 @@
       {{input type="text" value=search.query class="input-xxlarge"}}
     </div>
   {{/each}}
+
+  <label class="control-label">{{i18n 'saved_searches.title'}}</label>
+
+  <label>{{i18n 'saved_searches.description' max=maxSavedSearches}}</label>
+
+  <br/>
+
+  {{#each tagSearchStrings as |search index| }}
+    <div class="controls saved-searches-controls">
+      {{input type="text" value=search.query class="input-xxlarge"}}
+    </div>
+  {{/each}}
+
 </div>
 
 {{save-controls model=this action=(action "save") saved=saved}}
