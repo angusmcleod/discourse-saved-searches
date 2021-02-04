@@ -17,9 +17,9 @@
 
   <br/>
 
-  {{#each tagSearchStrings as |search index| }}
+  {{#each tagSearchStrings as |tagSearch index| }}
     <div class="controls saved-searches-controls">
-      {{input type="text" value=search.query class="input-xxlarge"}}
+      {{input type="text" value=tagSearch.query class="input-xxlarge"}}
     </div>
   {{/each}}
 

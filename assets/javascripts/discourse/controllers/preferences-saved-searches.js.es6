@@ -10,7 +10,7 @@ export default Ember.Controller.extend({
   searchStrings() {
     console.log('searchstrings');
     let records = [];
-    console.log(this.get("model.saved_searches"));
+    console.log(this.get("model.saved_searches"|| []));
     (this.get("model.saved_searches") || []).forEach((s) => {
       records.push({ query: s });
     });
