@@ -16,6 +16,15 @@
   <label>{{i18n 'saved_searches.description' max=maxSavedSearches}}</label>
 
   <br/>
+  {{!-- {{d-navigation
+    category=category
+    filterMode=filterMode
+    noSubcategories=noSubcategories
+    canCreateTopic=canCreateTopic
+    createTopic=(route-action "createTopic")
+    createTopicDisabled=cannotCreateTopicOnCategory
+    hasDraft=draft
+    editCategory=(route-action "editCategory" category)}} --}}
 
   {{#each tagSearchStrings as |tagSearch index| }}
     <div class="controls saved-searches-controls">
