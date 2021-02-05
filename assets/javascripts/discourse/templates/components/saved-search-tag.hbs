@@ -1,0 +1,5 @@
+<div class="controls saved-searches-controls">
+  {{input type="text" value=tagSearch.query class="input-xxlarge"}}
+  {{category-chooser value=categoryId onChange=(action (mut categoryId))}}
+  {{tag-chooser value=tagId onChange=(action (mut tagId))}}
+</div>

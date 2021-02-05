@@ -27,9 +27,7 @@
     editCategory=(route-action "editCategory" category)}} --}}
 
   {{#each tagSearchStrings as |tagSearch index| }}
-    <div class="controls saved-searches-controls">
-      {{input type="text" value=tagSearch.query class="input-xxlarge"}}
-    </div>
+    {{saved-search-tag tagSearch=tagSearch}}
   {{/each}}
 
 </div>
