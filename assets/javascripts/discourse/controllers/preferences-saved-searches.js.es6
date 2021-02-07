@@ -22,11 +22,18 @@ export default Ember.Controller.extend({
     @discourseComputed("model.saved_tag_searches")
     tagSearchStrings() {
       console.log('tag searchstrings');
+      console.log(this);
       let tag_records = [];
-      console.log(this.get("model.saved_tag_searches"));
-      (this.get("model.saved_tag_searches") || []).forEach((s) => {
-        tag_records.push({ query: s });
-      });
+      console.log('get saved-tag-searches');
+      var s = this.get("model.saved_tag_searches");
+      console.log(s);
+      console.log(typeof s);
+      for (const [key, val] of Object.entries(s)) {
+        console.log('val');
+        console.log(val);
+        console.log([val[0], val[1]] );
+        tag_records.push({ category: val[0], tags: val[1] });
+      };
       while (tag_records.length < this.get("maxSavedSearches")) {
         tag_records.push({ query: "" });
       }
@@ -36,7 +43,7 @@ export default Ember.Controller.extend({
   actions: {
     save() {
       console.log('save!');
-      console.log(this.get("searchStrings"));
+      console.log(this);
       console.log(this.get("tagSearchStrings"));
       this.setProperties({ saved: false, isSaving: true });
 
@@ -50,11 +57,16 @@ export default Ember.Controller.extend({
 
       const tagSearches = this.get("tagSearchStrings")
         .map((s) => {
-          return s.query ? s.query : null;
+          console.log("tagSearches");
+          console.log(s);
+          return [ s.category, s.tags ];
         })
         .compact();
 
       this.set("model.saved_tag_searches", tagSearches);
+      
+      console.log('gonna put');
+      console.log([searches, tagSearches]);
 
       return ajax("/saved_searches", {
         type: "PUT",
