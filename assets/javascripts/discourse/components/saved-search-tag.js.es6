@@ -9,7 +9,9 @@ export default Component.extend({
         console.log('selectedTags');
         console.log(value);
         console.log(tagSearch);
-      return value.split("|").filter(Boolean);
+        // todo: consider multiple tags
+        return value.split("|").filter(Boolean);
+        // return value;
     },
   },
   selectedCategory: {
@@ -28,7 +30,7 @@ export default Component.extend({
       console.log(tags);
       console.log('change tags cat');
       console.log(this.get("selectedCategory"));
-    this.set("tagSearch.tags", tags.join("|"));
+    this.set("tagSearch.tags", tags);
   },
   @action
   changeSelectedCategory(selectedCategory) {
