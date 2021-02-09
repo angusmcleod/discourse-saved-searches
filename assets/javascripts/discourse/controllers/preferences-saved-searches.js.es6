@@ -35,10 +35,10 @@ export default Ember.Controller.extend({
         let cat_tag = val.split(',');
         console.log(cat_tag);
         console.log(cat_tag[0]);
-        let tag = (cat_tag[1]== "null") ? null : cat_tag[1];
+        let tag = (cat_tag[1]== "null") ? null : [cat_tag[1]];
         let category = (cat_tag[0]== "null") ? null : cat_tag[0];
-        if (cat_tag[0] && cat_tag[1]) {
-          tag_records.push( {category: category, tag: [tag] });
+        if (cat_tag[0] && tag) {
+          tag_records.push( {category: category, tag: tag });
         }
       };
     };
