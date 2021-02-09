@@ -76,7 +76,7 @@ export default Ember.Controller.extend({
           console.log('tag');
             console.log(tag);
           console.log(s.tag);
-          return (`${category},${tag}`);
+          return ( category ? `${category},${tag}` : null);
         })
         .compact();
 
