@@ -28,15 +28,25 @@ export default Ember.Controller.extend({
       var s = this.get("model.saved_tag_searches");
       console.log(s);
       console.log(typeof s);
+      if (s){
       for (const [key, val] of Object.entries(s)) {
         console.log('val');
         console.log(val);
-        console.log([val[0], val[1]] );
-        tag_records.push({ category: val[0], tags: val[1] });
+        let cat_tag = val.split(',');
+        console.log(cat_tag);
+        console.log(cat_tag[0]);
+        let tag = (cat_tag[1]== "null") ? null : cat_tag[1];
+        let category = (cat_tag[0]== "null") ? null : cat_tag[0];
+        if (cat_tag[0] && cat_tag[1]) {
+          tag_records.push( {category: category, tag: [tag] });
+        }
       };
+    };
       while (tag_records.length < this.get("maxSavedSearches")) {
-        tag_records.push({ query: "" });
+        tag_records.push({ category: null, tag: null });
       }
+      console.log('tag_records');
+      console.log(tag_records);
       return tag_records;
     },
 
@@ -58,8 +68,12 @@ export default Ember.Controller.extend({
       const tagSearches = this.get("tagSearchStrings")
         .map((s) => {
           console.log("tagSearches");
-          console.log(s);
-          return [ s.category, s.tags ];
+          let category = s.category ? s.category : null;
+          let tag = s.tag ? s.tag[0] : null;
+          console.log('tag');
+            console.log(tag);
+          console.log(s.tag);
+          return (`${category},${tag}`);
         })
         .compact();
 

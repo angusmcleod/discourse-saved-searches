@@ -14,7 +14,8 @@ module Jobs
     end
 
     def user_ids
-      UserCustomField.where(name: 'saved_searches').pluck(:user_id)
+      UserCustomField.where(name: 'saved_tag_searches').or
+      (UserCustomField.where(name: 'saved_searches')).distinct.pluck(:user_id)
     end
 
   end

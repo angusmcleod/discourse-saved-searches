@@ -11,3 +11,7 @@ en:
         New results have been found for **%{term}**!
 
         %{posts}
+      text_body_tag_template: |
+        New results have been found in **%{category_name}** with **%{tag}**!
+
+        %{posts}

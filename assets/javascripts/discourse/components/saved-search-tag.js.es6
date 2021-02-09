@@ -29,8 +29,8 @@ export default Component.extend({
       console.log(this);
       console.log(tags);
       console.log('change tags cat');
-      console.log(this.get("selectedCategory"));
-    this.set("tagSearch.tags", tags);
+    //   console.log(this.get("selectedCategory"));
+    this.set("tagSearch.tag", tags);
   },
   @action
   changeSelectedCategory(selectedCategory) {
