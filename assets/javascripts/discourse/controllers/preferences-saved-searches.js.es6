@@ -37,10 +37,13 @@ export default Ember.Controller.extend({
         console.log(cat_tag[0]);
         let tag = (cat_tag[1]== "null") ? null : [cat_tag[1]];
         let category = (cat_tag[0]== "null") ? null : cat_tag[0];
-        if (cat_tag[0] && tag) {
+        if (category!=null && tag[0] != null) {
           tag_records.push( {category: category, tag: tag });
         }
       };
+      while (tag_records.length < this.get("maxSavedSearches")) {
+        tag_records.push({ category: "", tag: null });
+      }
     };
       while (tag_records.length < this.get("maxSavedSearches")) {
         tag_records.push({ category: null, tag: null });
