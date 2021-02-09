@@ -6,6 +6,7 @@
     onChange=(action "changeSelectedCategory")
     options=(hash allowAny=false)
   }}
+  {{#if tagSearch.category}}
 {{tag-chooser
   tags=tagSearch.tag
   categoryId=tagSearch.category
@@ -15,4 +16,5 @@
     maximum=1
   )
 }}
+{{/if}}
 </div>
