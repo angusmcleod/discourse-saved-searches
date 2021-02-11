@@ -37,7 +37,8 @@ describe Jobs::SavedSearchNotification do
 
     context "first search" do
       context "with recent post" do
-        let(:topic) { Fabricate(:topic, category: category, tags: [tag1]) }
+        let!(:topic) { Fabricate(:topic, category: category, tags: [tag1]) }
+        let!(:post) { Fabricate(:post, topic: topic ) }
 
         it "creates a PM if recent results are found" do
           expect(topic.category_id).to eq(category.id)
