@@ -9,6 +9,7 @@ module Jobs
 
     def execute(args)
       Rails.logger.warn('saved search for #{args[:user_id]}!')
+      puts("saved search for #{args[:user_id]}!")
 
       if user = User.where(id: args[:user_id]).first
         Rails.logger.warn('saved search for #{user}!')
@@ -38,33 +39,40 @@ module Jobs
               end
             end
           end
+        end
 
-          if searches = (user.custom_fields['saved_tag_searches'] || {})['tag_searches']
-            Rails.logger.warn('saved search for #{user} doing tag #{searches}!')
-            searches.each do |tag_rec|
-              category_id = tag_rec[1][0]
-              begin
-                category = Category.find(category_id)
-                category_name = category.name
-              rescue
-                category = nil
-                category_name = ""
-              end
-              tag = tag_rec[1][1]
-              search = Search.new(
-                "category:#{category_name} tag:#{tag} in:unseen after:#{since.strftime("%Y-%-m-%-d")} order:latest",
-                guardian: Guardian.new(user),
-                type_filter: 'topic'
-              )
+        if searches = (user.custom_fields['saved_tag_searches'] || {})['tag_searches']
+          Rails.logger.warn("saved tag search for #{user.id} doing tag_searc #{searches}!")
+          puts("saved search for #{user.id} (tl: #{user.trust_level}) doing tag_searches #{searches}!")
+          searches.each do |tag_rec|
+            category_id, tag = tag_rec.split(',')
+            category = nil
+            category_name = ""
+            begin
+              category = Category.find(category_id)
+              category_name = category.name
+            rescue
+              category = nil
+            end
+            puts "Got cat #{category_id}. Tag: #{tag}. User: #{user.id}"
+            search = Search.new(
+              "category:#{category_id} tag:#{tag} in:unseen after:#{since.strftime("%Y-%-m-%-d")} order:latest",
+              guardian: Guardian.new(user),
+              # type_filter: 'topic'
+            )
 
-              results = search.execute
+            topics = Topic.where(category_id: category_id)
+            puts "Found #{topics.count} topics with category_id: #{category_id}"
 
-              if category && results.posts.count > 0 && results.posts.first.id > min_post_id
-                posts = results.posts.reject { |post| post.user_id == user.id || post.post_type != Post.types[:regular] }
-                if posts.size > 0
-                  results_tags_notification(user, tag_rec[1], posts)
-                  new_min_post_id = [new_min_post_id, posts.map(&:id).max].max
-                end
+            puts "Search: #{search.clean_term}"
+            results = search.execute
+            puts "results.posts.count #{results.posts.count}."
+
+            if results.posts.count > 0 && results.posts.first.id > min_post_id
+              posts = results.posts.reject { |post| post.user_id == user.id || post.post_type != Post.types[:regular] }
+              if posts.size > 0
+                results_tags_notification(user, category_name, tag, posts)
+                new_min_post_id = [new_min_post_id, posts.map(&:id).max].max
               end
             end
           end
@@ -109,6 +117,7 @@ module Jobs
     end
 
     def results_tags_notification(user, category_name, tag, posts)
+      puts "r_t_n: for #{user} in #{category_name} with #{posts.size}"
       if posts.size > 0
         posts_raw = if posts.size < 6
           posts.map(&:full_url).join("\n\n".freeze)
